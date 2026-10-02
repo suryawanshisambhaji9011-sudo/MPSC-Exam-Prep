@@ -1,0 +1,16 @@
+# Do not commit generated or local IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+ios/Pods/
+android/.gradle/
+android/.idea/
+android/local.properties
+.DS_Store
