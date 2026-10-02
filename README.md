@@ -8,6 +8,7 @@ A professional Marathi MPSC preparation app built with Flutter for iOS and Andro
 - Mock test flow
 - Progress tracking UI
 - Ready for question bank expansion
+- Quiz screen and result screen
 
 ## Tech stack
 - Flutter
@@ -29,4 +30,4 @@ flutter run
 - `lib/widgets/` – reusable UI components
 
 ## Notes
-This starter app includes a structured question model and sample Marathi MPSC data. For a production app with 15,000–20,000 questions, the recommended approach is to load data from JSON, SQLite, or Firebase Firestore in batches by subject and chapter.
+This is a scalable starter app for Marathi MPSC preparation. It is structured for expansion to a full 15,000–20,000 question bank using JSON, SQLite, or Firebase Firestore.

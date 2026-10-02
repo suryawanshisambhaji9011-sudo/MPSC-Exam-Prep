@@ -1,186 +1,184 @@
-import 'package:flutter/material.dart';
-import 'package:mpsc_katta/data/mock_questions.dart';
 import 'package:mpsc_katta/models/question.dart';
-import 'package:mpsc_katta/widgets/stat_card.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final subjectList = [
-      {'title': 'मराठी', 'icon': Icons.edit_note_rounded, 'color': const Color(0xFF0F766E)},
-      {'title': 'इतिहास', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF7C3AED)},
-      {'title': 'भूगोल', 'icon': Icons.map_rounded, 'color': const Color(0xFF2563EB)},
-      {'title': 'संविधान', 'icon': Icons.gavel_rounded, 'color': const Color(0xFFDC2626)},
-      {'title': 'अर्थशास्त्र', 'icon': Icons.attach_money_rounded, 'color': const Color(0xFF059669)},
-      {'title': 'विज्ञान', 'icon': Icons.science_rounded, 'color': const Color(0xFFF59E0B)},
-    ];
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('MPSC Katta'),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: CircleAvatar(
-              backgroundColor: Color(0xFF0F766E),
-              child: Icon(Icons.person, color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            const Text(
-              'नमस्कार! तुमच्या MPSC तयारीसाठी तयार.',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF0F172A),
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'नियमित सराव, MOCK TEST आणि प्रगती ट्रॅकिंगसह सुंदर UI.',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF475569),
-              ),
-            ),
-            const SizedBox(height: 20),
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 1.25,
-              children: const [
-                StatCard(label: 'एकूण प्रश्न', value: '20,000+', accent: Color(0xFF0F766E)),
-                StatCard(label: 'सोडत', value: '88%', accent: Color(0xFF7C3AED)),
-                StatCard(label: 'दिवस', value: '14', accent: Color(0xFF2563EB)),
-                StatCard(label: 'स्ट्रीक', value: '12', accent: Color(0xFFDC2626)),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'विषय निवडा',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF0F172A),
-              ),
-            ),
-            const SizedBox(height: 12),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: subjectList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 1.15,
-              ),
-              itemBuilder: (context, index) {
-                final item = subjectList[index];
-                return Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(18),
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        gradient: LinearGradient(
-                          colors: [
-                            (item['color'] as Color).withOpacity(0.15),
-                            Colors.white,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundColor: item['color'] as Color,
-                            child: Icon(item['icon'] as IconData, color: Colors.white),
-                          ),
-                          const Spacer(),
-                          Text(
-                            item['title'] as String,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF0F172A),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${allQuestions.where((e) => e.subject == item['title']).length} प्रश्न',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF64748B),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            const Text(
-              'आजचे लक्ष्य',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF0F172A),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0F172A),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'आज 30 प्रश्नांची MOCK TEST सोडवा',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'मराठी व्याकरण + इतिहास + संविधान यावर लक्ष केंद्रित करा.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFFCBD5E1),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+const List<MpscQuestion> allQuestions = [
+  MpscQuestion(
+    id: 1,
+    subject: 'मराठी',
+    chapter: 'व्याकरण',
+    question: '"अंतिम" या शब्दाचे विरुद्धार्थी शब्द कोणते ?',
+    options: ['प्रथम', 'अंत', 'नवीन', 'गहन'],
+    correctIndex: 0,
+    explanation: '"अंतिम" चे विरुद्धार्थी शब्द "प्रथम" आहे.',
+  ),
+  MpscQuestion(
+    id: 2,
+    subject: 'मराठी',
+    chapter: 'साहित्य',
+    question: '"सर्वकष" या शब्दाचा अर्थ दर्शवणारा पर्याय निवडा.',
+    options: ['सर्वत्र', 'सर्वांश', 'सर्वांगीण', 'अनेक'],
+    correctIndex: 2,
+    explanation: '"सर्वकष" म्हणजे सर्वांगीण / सर्वदिशांनी संपन्न.',
+  ),
+  MpscQuestion(
+    id: 3,
+    subject: 'इतिहास',
+    chapter: 'महाराष्ट्राचा इतिहास',
+    question: 'छत्रपती शिवाजी महाराजांचे राज्याभिषेक कोठे झाले?',
+    options: ['रायगड', 'सिंहगड', 'शिवनेरी', 'पुणे'],
+    correctIndex: 0,
+    explanation: 'शिवाजी महाराजांचे राज्याभिषेक रायगडावर झाले.',
+  ),
+  MpscQuestion(
+    id: 4,
+    subject: 'इतिहास',
+    chapter: 'भारतीय स्वातंत्र्यलढा',
+    question: '"साइमन कमिशन" हा आयोग कोणत्या वर्षी आला?',
+    options: ['1928', '1927', '1930', '1925'],
+    correctIndex: 0,
+    explanation: 'साइमन कमिशन 1928 मध्ये आला.',
+  ),
+  MpscQuestion(
+    id: 5,
+    subject: 'भूगोल',
+    chapter: 'भारताचे स्थलरूप',
+    question: 'पश्चिम घाटाचे मुख्य भाग कोणत्या राज्यांमध्ये आहे?',
+    options: ['महाराष्ट्र आणि कर्नाटक', 'मध्य प्रदेश आणि बिहार', 'गुजरात आणि राजस्थान', 'आंध्र प्रदेश आणि तेलंगणा'],
+    correctIndex: 0,
+    explanation: 'पश्चिम घाट महाराष्ट्र, गोवा, कर्नाटक, केरल यात विस्तारलेला आहे.',
+  ),
+  MpscQuestion(
+    id: 6,
+    subject: 'भूगोल',
+    chapter: 'अभ्यास',
+    question: 'खच्चर वाळवंट कोणत्या देशात आहे?',
+    options: ['मोरोक्को', 'सौदी अरब', 'मलेशिया', 'जपान'],
+    correctIndex: 1,
+    explanation: 'सौदी अरबीमध्ये वाळवंट प्रदेश आढळतात.',
+  ),
+  MpscQuestion(
+    id: 7,
+    subject: 'भारतीय संविधान',
+    chapter: 'मूलभूत हक्क',
+    question: 'भारतीय संविधानातील मूलभूत हक्कांची संख्या किती आहे?',
+    options: ['5', '6', '7', '8'],
+    correctIndex: 1,
+    explanation: 'संविधानाचे 6 मूलभूत हक्क आहेत.',
+  ),
+  MpscQuestion(
+    id: 8,
+    subject: 'भारतीय स���विधान',
+    chapter: 'संस्था',
+    question: 'लोकसभा सदस्यांची अधिकतम संख्या किती?',
+    options: ['545', '552', '530', '550'],
+    correctIndex: 0,
+    explanation: 'लोकसभेची अधिकतम सदस्यसंख्या 545 आहे.',
+  ),
+  MpscQuestion(
+    id: 9,
+    subject: 'अर्थशास्त्र',
+    chapter: 'बाजार',
+    question: 'विक्रीकर (GST) हे कोणत्या प्रकारचे कर आहे?',
+    options: ['प्रत्यक्ष कर', 'अप्रत्यक्ष कर', 'मालमत्ता कर', 'पर्यटन कर'],
+    correctIndex: 1,
+    explanation: 'GST हे अप्रत्यक्ष कर आहे.',
+  ),
+  MpscQuestion(
+    id: 10,
+    subject: 'अर्थशास्त्र',
+    chapter: 'जागतिक अर्थशास्त्र',
+    question: 'जागतिक बँकेची मुख्य भूमिका कोणती आहे?',
+    options: ['सैन्यकरण', 'आर्थिक विकास आणि विकासात्मक वित्त', 'शिक्षण', 'पोलिसिंग'],
+    correctIndex: 1,
+    explanation: 'जागतिक बँक आर्थिक विकासासाठी वित्तपुरवठा करते.',
+  ),
+  MpscQuestion(
+    id: 11,
+    subject: 'विज्ञान',
+    chapter: 'जीवशास्त्र',
+    question: 'प्लास्टिड्स मुख्यतः कोणत्या प्रकारच्या पेशीमध्ये आढळतात?',
+    options: ['प्राण्यांच्या पेशी', 'वनस्पतींच्या पेशी', 'जीवाणू', 'कवक'],
+    correctIndex: 1,
+    explanation: 'प्लास्टिड्स मुख्यतः वनस्पतींच्या पेशींमध्ये आढळतात.',
+  ),
+  MpscQuestion(
+    id: 12,
+    subject: 'विज्ञान',
+    chapter: 'भौतिकशास्त्र',
+    question: 'प्रकाशाच्या वेगाचे मूल्यमापन किती आहे?',
+    options: ['3 × 10^8 m/s', '3 × 10^7 m/s', '3 × 10^6 m/s', '3 × 10^5 m/s'],
+    correctIndex: 0,
+    explanation: 'प्रकाशाचा वेग सुमारे 3 × 10^8 मीटर/सेकंद आहे.',
+  ),
+  MpscQuestion(
+    id: 13,
+    subject: 'तर्कशास्त्र',
+    chapter: 'मानसिक क्षमता',
+    question: '7, 14, 21, 28, ___ ?',
+    options: ['32', '35', '36', '42'],
+    correctIndex: 1,
+    explanation: 'सदृश अंतर 7 आहे; म्हणून पुढील संख्या 35 आहे.',
+  ),
+  MpscQuestion(
+    id: 14,
+    subject: 'तर्कशास्त्र',
+    chapter: 'संबंध',
+    question: 'तांदूळ : धान्य :: सोयाबीन : ?',
+    options: ['फळ', 'दाणे', 'तळलेले', 'भाजलेले'],
+    correctIndex: 1,
+    explanation: 'तांदूळही धान्याचा प्रकार आहे; सोयाबीनही धान्याची फळे आहे.',
+  ),
+  MpscQuestion(
+    id: 15,
+    subject: 'मराठी',
+    chapter: 'उपसर्ग-प्रत्यय',
+    question: '"अभ्यास" शब्दामध्ये कोणता उपसर्ग आहे?',
+    options: ['अ', 'अभि', 'अभ्य', 'अभ'],
+    correctIndex: 1,
+    explanation: 'अभ्यासात "अभि" हा उपसर्ग आहे.',
+  ),
+  MpscQuestion(
+    id: 16,
+    subject: 'इतिहास',
+    chapter: 'महाराष्ट्र',
+    question: 'महाराष्ट्राची राजधानी कोणती आहे?',
+    options: ['नागपूर', 'मुंबई', 'पुणे', 'औरंगाबाद'],
+    correctIndex: 1,
+    explanation: 'महाराष्ट्राची राजधानी मुंबई आहे.',
+  ),
+  MpscQuestion(
+    id: 17,
+    subject: 'सामान्यज्ञान',
+    chapter: 'पर्वत',
+    question: 'भारतातील सर्वात उंच पर्वत शिखर कोणते आहे?',
+    options: ['कंचनजंगा', 'नंदादेवी', 'कामेश्वर', 'कांगचेनजुंगा'],
+    correctIndex: 3,
+    explanation: 'कांगचेनजुंगा हा भारतातील सर्वात उंच पर्वत शिखर आहे.',
+  ),
+  MpscQuestion(
+    id: 18,
+    subject: 'भूगोल',
+    chapter: 'अभ्यास',
+    question: 'महाराष्ट्रातील सर्वात मोठे धरण कोणते आहे?',
+    options: ['कायदेश्वर', 'तुळशी', 'खडकवासला', 'सिंधुदुर्ग'],
+    correctIndex: 0,
+    explanation: 'कायदेश्वर धरण महाराष्ट्रातील एक महत्वाचे मोठे धरण आहे.',
+  ),
+  MpscQuestion(
+    id: 19,
+    subject: 'विज्ञान',
+    chapter: 'रसायनशास्त्र',
+    question: 'वायूचे ऑक्सिजन आणि नायट्रोजन यांतून बनलेले मिश्रण आहे?',
+    options: ['हवा', 'वर्षा', 'दूध', 'पाणी'],
+    correctIndex: 0,
+    explanation: 'हवा मुख्यतः नायट्रोजन आणि ऑक्सिजनचे मिश्रण आहे.',
+  ),
+  MpscQuestion(
+    id: 20,
+    subject: 'अर्थशास्त्र',
+    chapter: 'सरकारी धोरणे',
+    question: 'आंतरराष्ट्रीय व्यापारामध्ये आयात-वितरण यांच्यातील तफावत कोणती?',
+    options: ['आयात ही बाहेरून घेणे, निर्यात ही बाहेर पाठवणे', 'आयात हे देशांतर्गत वस्तू, निर्यात बाहेर', 'दोन्ही समान', 'काहीही नाही'],
+    correctIndex: 0,
+    explanation: 'आयात म्हणजे बाहेरून वस्तू आणणे, निर्यात म्हणजे देशाबाहेर पाठवणे.',
+  ),
+];

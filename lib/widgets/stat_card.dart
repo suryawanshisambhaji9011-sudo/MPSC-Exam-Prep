@@ -1,139 +1,125 @@
 import 'package:flutter/material.dart';
+import 'package:mpsc_katta/models/question.dart';
 
-class ProgressScreen extends StatelessWidget {
-  const ProgressScreen({super.key});
+class ResultScreen extends StatelessWidget {
+  final List<MpscQuestion> questions;
+  final List<int?> selectedAnswers;
+  final int score;
+
+  const ResultScreen({
+    super.key,
+    required this.questions,
+    required this.selectedAnswers,
+    required this.score,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final total = questions.length;
+    final percentage = (score / total * 100).round();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('प्रगती'),
+        title: const Text('परिणाम'),
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            const Text(
-              'तुमची तयारी स्थिती',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF0F766E), Color(0xFF14B8A6)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'तुमचे परिणाम',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '$score/$total',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '$percentage% स्कोअर',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
-            _MetricCard(title: 'सध्याचा स्कोअर', value: '84%', color: const Color(0xFF0F766E)),
-            const SizedBox(height: 12),
-            _MetricCard(title: 'मॉक टेस्ट', value: '12/20', color: const Color(0xFF7C3AED)),
-            const SizedBox(height: 12),
-            _MetricCard(title: 'सराव प्रश्न', value: '1,240', color: const Color(0xFF2563EB)),
-            const SizedBox(height: 20),
             const Text(
-              'उपलब्धी',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              'प्रत्येक प्रश्नाचे तपशील',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 12),
-            _AchievementTile(title: 'मराठी व्याकरण', subtitle: 'लक्ष्य पूर्ण', icon: Icons.check_circle_rounded),
-            _AchievementTile(title: 'इतिहास', subtitle: 'सात दिवसांचा रूटीन', icon: Icons.auto_awesome_rounded),
-            _AchievementTile(title: 'संविधान', subtitle: 'प्रॅक्टिस चालू', icon: Icons.timeline_rounded),
+            ...List.generate(questions.length, (index) {
+              final question = questions[index];
+              final selected = selectedAnswers[index];
+              final isCorrect = selected == question.correctIndex;
+
+              return Container(
+                margin: const EdgeInsets.only(bottom: 14),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${index + 1}. ${question.question}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF0F172A),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'तुमची निवड: ${selected == null ? 'नको' : question.options[selected]}',
+                      style: TextStyle(
+                        color: isCorrect ? const Color(0xFF0F766E) : const Color(0xFFDC2626),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'उत्पन्न उत्तर: ${question.options[question.correctIndex]}',
+                      style: const TextStyle(color: Color(0xFF475569)),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'स्पष्टीकरण: ${question.explanation}',
+                      style: const TextStyle(color: Color(0xFF475569)),
+                    ),
+                  ],
+                ),
+              );
+            }),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _MetricCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final Color color;
-
-  const _MetricCard({
-    required this.title,
-    required this.value,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        color: color.withOpacity(0.12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF0F172A),
-            ),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF0F172A),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AchievementTile extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-
-  const _AchievementTile({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: const Color(0xFF0F766E).withOpacity(0.12),
-            child: Icon(icon, color: const Color(0xFF0F766E)),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF0F172A),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: Color(0xFF64748B),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFF64748B)),
-        ],
       ),
     );
   }

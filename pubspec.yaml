@@ -1,21 +1,47 @@
-name: mpsc_katta
+import 'package:flutter/material.dart';
 
-description: "Professional Marathi MPSC preparation app for iOS and Android."
-publish_to: 'none'
-version: 1.0.0+1
+class StatCard extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color accent;
 
-environment:
-  sdk: '>=3.2.0 <4.0.0'
+  const StatCard({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.accent,
+  });
 
-dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^1.0.6
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^3.0.0
-
-flutter:
-  uses-material-design: true
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: accent.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: accent,
+            ),
+          ),
+          const Spacer(),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w800,
+              color: Color(0xFF0F172A),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
